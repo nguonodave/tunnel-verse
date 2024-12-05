@@ -108,6 +108,26 @@ func processLine(line string) {
 	}
 }
 
+func hasStartAndEnd(file *os.File) bool {
+	hasStart := false
+	hasEnd := false
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		if line == "##start" {
+			hasStart = true
+		} else if line == "##end" {
+			hasEnd = true
+		}
+		if hasStart && hasEnd {
+			file.Seek(0, 0)
+			return true
+		}
+	}
+	return false
+}
+
 func main() {
 	if len(os.Args) != 2 {
 		log.Println("ERROR: missing file name")
@@ -117,6 +137,10 @@ func main() {
 	file, errOpenFile := os.Open(os.Args[1])
 	handleError(errOpenFile)
 	defer file.Close()
+
+	if !hasStartAndEnd(file) {
+		log.Fatal("ERROR: invalid data format, no start or end room found")
+	}
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
