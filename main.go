@@ -37,17 +37,11 @@ func handleError(err error) {
 
 func validRoomConnection(line string) bool {
 	parts := strings.Split(line, "-")
-	if len(parts) != 2 {
-		return false
-	}
-	room1, room2 := parts[0], parts[1]
-	if room1 == "" || room2 == "" {
-		return false
-	}
-	if strings.Contains(room1, " ") || strings.Contains(room2, " ") {
-		return false
-	}
-	return true
+	return len(parts) == 2 &&
+		parts[0] != "" &&
+		parts[1] != "" &&
+		!strings.Contains(parts[0], " ") &&
+		!strings.Contains(parts[1], " ")
 }
 
 func processNumberOfAnts(line string) error {
