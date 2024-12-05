@@ -15,6 +15,7 @@ var (
 	startNode  = false
 	endNode    = false
 	roomName   string
+	roomNames  []string
 	xCord      int
 	yCord      int
 	errCord    error
@@ -97,12 +98,14 @@ func processLine(line string) {
 		handleError(errRoom)
 		fmt.Println(startRoom)
 		storeRoom(startRoom, x, y)
+		roomNames = append(roomNames, startRoom)
 		startNode = false
 	} else if endNode {
 		endRoom, x, y, errRoom := getRoom(line)
 		handleError(errRoom)
 		fmt.Println(endRoom)
 		storeRoom(endRoom, x, y)
+		roomNames = append(roomNames, endRoom)
 		endNode = false
 	} else if strings.Contains(line, "-") && validRoomConnection(line) {
 		rooms := strings.Split(line, "-")
@@ -136,4 +139,5 @@ func main() {
 
 	fmt.Println(colony)
 	fmt.Println(rooms)
+	fmt.Println(roomNames)
 }
