@@ -14,18 +14,18 @@ var (
 	firstLine  = true
 	startNode  = false
 	endNode    = false
-	roomName string
-	xCord int
-	yCord int
-	errCord error
-	colony = make(map[string][]string)
-	rooms []Room
+	roomName   string
+	xCord      int
+	yCord      int
+	errCord    error
+	colony     = make(map[string][]string)
+	rooms      []Room
 )
 
 type Room struct {
 	Name string
-	X int
-	Y int
+	X    int
+	Y    int
 }
 
 func handleError(err error) {
@@ -79,10 +79,10 @@ func getRoom(line string) (string, int, int, error) {
 }
 
 func storeRoom(name string, x, y int) {
-	room := Room {
+	room := Room{
 		Name: name,
-		X: x,
-		Y: y,
+		X:    x,
+		Y:    y,
 	}
 	rooms = append(rooms, room)
 }
@@ -104,12 +104,10 @@ func processLine(line string) {
 		fmt.Println(endRoom)
 		storeRoom(endRoom, x, y)
 		endNode = false
-	} else if strings.Contains(line, "-") {
-		if validRoomConnection(line) {
-			rooms := strings.Split(line, "-")
-			colony[rooms[0]] = append(colony[rooms[0]], rooms[1])
-			colony[rooms[1]] = append(colony[rooms[1]], rooms[0])
-		}
+	} else if strings.Contains(line, "-") && validRoomConnection(line) {
+		rooms := strings.Split(line, "-")
+		colony[rooms[0]] = append(colony[rooms[0]], rooms[1])
+		colony[rooms[1]] = append(colony[rooms[1]], rooms[0])
 	}
 }
 
