@@ -72,6 +72,14 @@ func validColonyRooms(file *os.File) bool {
 		if validRoomConnection(line) {
 			storeConnectedRooms(line)
 		}
+
+		if strings.Contains(line, " ") {
+			roomName, _, _, errRoom := getRoom(line)
+			handleError(errRoom)
+			if !sliceContainsString(roomNames, roomName) {
+				roomNames = append(roomNames, roomName)
+			}
+		}
 	}
 
 	if len(connectedRooms) != len(roomNames) {
@@ -138,18 +146,12 @@ func processLine(line string) {
 		handleError(errRoom)
 		fmt.Println(startRoom)
 		storeRoom(startRoom, x, y)
-		if !sliceContainsString(roomNames, startRoom) {
-			roomNames = append(roomNames, startRoom)
-		}
 		startNode = false
 	} else if endNode {
 		endRoom, x, y, errRoom := getRoom(line)
 		handleError(errRoom)
 		fmt.Println(endRoom)
 		storeRoom(endRoom, x, y)
-		if !sliceContainsString(roomNames, endRoom) {
-			roomNames = append(roomNames, endRoom)
-		}
 		endNode = false
 	} else if validRoomConnection(line) {
 		rooms := strings.Split(line, "-")
