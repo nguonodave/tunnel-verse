@@ -5,22 +5,24 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
 
 var (
-	antsNumber int
-	firstLine  = true
-	startNode  = false
-	endNode    = false
-	roomName   string
-	roomNames  []string
-	xCord      int
-	yCord      int
-	errCord    error
-	colony     = make(map[string][]string)
-	rooms      []Room
+	antsNumber     int
+	firstLine      = true
+	startNode      = false
+	endNode        = false
+	roomName       string
+	roomNames      []string
+	connectedRooms []string
+	xCord          int
+	yCord          int
+	errCord        error
+	colony         = make(map[string][]string)
+	rooms          []Room
 )
 
 type Room struct {
@@ -35,13 +37,57 @@ func handleError(err error) {
 	}
 }
 
+func sliceContainsString(arr []string, s string) bool {
+	for _, v := range arr {
+		if v == s {
+			return true
+		}
+	}
+	return false
+}
+
 func validRoomConnection(line string) bool {
-	parts := strings.Split(line, "-")
-	return len(parts) == 2 &&
-		parts[0] != "" &&
-		parts[1] != "" &&
-		!strings.Contains(parts[0], " ") &&
-		!strings.Contains(parts[1], " ")
+	rooms := strings.Split(line, "-")
+	return len(rooms) == 2 &&
+		strings.Contains(line, "-") &&
+		rooms[0] != "" &&
+		rooms[1] != "" &&
+		!strings.Contains(rooms[0], " ") &&
+		!strings.Contains(rooms[1], " ")
+}
+
+func storeConnectedRooms(line string) {
+	rooms := strings.Split(line, "-")
+	for _, v := range rooms {
+		if !sliceContainsString(connectedRooms, v) {
+			connectedRooms = append(connectedRooms, v)
+		}
+	}
+}
+
+func validColonyRooms(file *os.File) bool {
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		if validRoomConnection(line) {
+			storeConnectedRooms(line)
+		}
+	}
+
+	if len(connectedRooms) != len(roomNames) {
+		return false
+	}
+
+	sort.Strings(roomNames)
+	sort.Strings(connectedRooms)
+
+	for i := range connectedRooms {
+		if connectedRooms[i] != roomNames[i] {
+			return false
+		}
+	}
+	file.Seek(0, 0)
+	return true
 }
 
 func processNumberOfAnts(line string) error {
@@ -92,16 +138,20 @@ func processLine(line string) {
 		handleError(errRoom)
 		fmt.Println(startRoom)
 		storeRoom(startRoom, x, y)
-		roomNames = append(roomNames, startRoom)
+		if !sliceContainsString(roomNames, startRoom) {
+			roomNames = append(roomNames, startRoom)
+		}
 		startNode = false
 	} else if endNode {
 		endRoom, x, y, errRoom := getRoom(line)
 		handleError(errRoom)
 		fmt.Println(endRoom)
 		storeRoom(endRoom, x, y)
-		roomNames = append(roomNames, endRoom)
+		if !sliceContainsString(roomNames, endRoom) {
+			roomNames = append(roomNames, endRoom)
+		}
 		endNode = false
-	} else if strings.Contains(line, "-") && validRoomConnection(line) {
+	} else if validRoomConnection(line) {
 		rooms := strings.Split(line, "-")
 		colony[rooms[0]] = append(colony[rooms[0]], rooms[1])
 		colony[rooms[1]] = append(colony[rooms[1]], rooms[0])
@@ -142,6 +192,10 @@ func main() {
 		log.Fatal("ERROR: invalid data format, no start or end room found")
 	}
 
+	if !validColonyRooms(file) {
+		log.Fatal("ERROR: invalid data format, your room links diverge from the rooms")
+	}
+
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
@@ -158,4 +212,5 @@ func main() {
 	fmt.Println(colony)
 	fmt.Println(rooms)
 	fmt.Println(roomNames)
+	fmt.Println(connectedRooms)
 }
