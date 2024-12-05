@@ -82,9 +82,9 @@ func processLine(line string) {
 		fmt.Println(startRoom)
 		startNode = false
 	} else if endNode {
-		startRoom, _, _, errRoom := getRoom(line)
+		endRoom, _, _, errRoom := getRoom(line)
 		handleError(errRoom)
-		fmt.Println(startRoom)
+		fmt.Println(endRoom)
 		endNode = false
 	} else if strings.Contains(line, "-") {
 		if validRoomConnection(line) {
