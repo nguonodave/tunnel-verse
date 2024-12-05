@@ -19,7 +19,14 @@ var (
 	yCord int
 	errCord error
 	colony = make(map[string][]string)
+	rooms []Room
 )
+
+type Room struct {
+	Name string
+	X int
+	Y int
+}
 
 func handleError(err error) {
 	if err != nil {
@@ -71,20 +78,31 @@ func getRoom(line string) (string, int, int, error) {
 	return roomName, x, y, nil
 }
 
+func storeRoom(name string, x, y int) {
+	room := Room {
+		Name: name,
+		X: x,
+		Y: y,
+	}
+	rooms = append(rooms, room)
+}
+
 func processLine(line string) {
 	if firstLine {
 		errNumberOfAnts := processNumberOfAnts(line)
 		handleError(errNumberOfAnts)
 		firstLine = false
 	} else if startNode {
-		startRoom, _, _, errRoom := getRoom(line)
+		startRoom, x, y, errRoom := getRoom(line)
 		handleError(errRoom)
 		fmt.Println(startRoom)
+		storeRoom(startRoom, x, y)
 		startNode = false
 	} else if endNode {
-		endRoom, _, _, errRoom := getRoom(line)
+		endRoom, x, y, errRoom := getRoom(line)
 		handleError(errRoom)
 		fmt.Println(endRoom)
+		storeRoom(endRoom, x, y)
 		endNode = false
 	} else if strings.Contains(line, "-") {
 		if validRoomConnection(line) {
@@ -119,4 +137,5 @@ func main() {
 	}
 
 	fmt.Println(colony)
+	fmt.Println(rooms)
 }
