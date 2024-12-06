@@ -15,6 +15,8 @@ var (
 	firstLine      = true
 	startNode      = false
 	endNode        = false
+	startRoom string
+	endRoom string
 	roomName       string
 	roomNames      []string
 	connectedRooms []string
@@ -142,15 +144,15 @@ func processLine(line string) {
 		handleError(errNumberOfAnts)
 		firstLine = false
 	} else if startNode {
-		startRoom, x, y, errRoom := getRoom(line)
+		start, x, y, errRoom := getRoom(line)
 		handleError(errRoom)
-		fmt.Println(startRoom)
+		startRoom = start
 		storeRoom(startRoom, x, y)
 		startNode = false
 	} else if endNode {
-		endRoom, x, y, errRoom := getRoom(line)
+		end, x, y, errRoom := getRoom(line)
 		handleError(errRoom)
-		fmt.Println(endRoom)
+		endRoom = end
 		storeRoom(endRoom, x, y)
 		endNode = false
 	} else if validRoomConnection(line) {
@@ -215,4 +217,6 @@ func main() {
 	fmt.Println(rooms)
 	fmt.Println(roomNames)
 	fmt.Println(connectedRooms)
+	fmt.Println(startRoom)
+	fmt.Println(endRoom)
 }
