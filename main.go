@@ -8,24 +8,9 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"lem-in/models"
-)
 
-var (
-	antsNumber     int
-	firstLine      = true
-	startNode      = false
-	endNode        = false
-	startRoom string
-	endRoom string
-	roomName       string
-	roomNames      []string
-	connectedRooms []string
-	xCord          int
-	yCord          int
-	errCord        error
-	colony         = make(map[string][]string)
-	rooms          []models.Room
+	"lem-in/models"
+	"lem-in/vars"
 )
 
 func handleError(err error) {
@@ -56,8 +41,8 @@ func validRoomConnection(line string) bool {
 func storeConnectedRooms(line string) {
 	rooms := strings.Split(line, "-")
 	for _, v := range rooms {
-		if !sliceContainsString(connectedRooms, v) {
-			connectedRooms = append(connectedRooms, v)
+		if !sliceContainsString(vars.ConnectedRooms, v) {
+			vars.ConnectedRooms = append(vars.ConnectedRooms, v)
 		}
 	}
 }
@@ -71,29 +56,29 @@ func validColonyRooms(file *os.File) bool {
 		}
 
 		if strings.Contains(line, " ") {
-			roomName, x, y, errRoom := getRoom(line)
+			name, x, y, errRoom := getRoom(line)
 			handleError(errRoom)
 
-			if sliceContainsString(roomNames, roomName) {
+			if sliceContainsString(vars.RoomNames, name) {
 				log.Fatal("ERROR: invalid data format, room definition repeated")
 			}
 
-			storeRoom(roomName, x, y)
-			if !sliceContainsString(roomNames, roomName) {
-				roomNames = append(roomNames, roomName)
+			storeRoom(name, x, y)
+			if !sliceContainsString(vars.RoomNames, name) {
+				vars.RoomNames = append(vars.RoomNames, name)
 			}
 		}
 	}
 
-	if len(connectedRooms) != len(roomNames) {
+	if len(vars.ConnectedRooms) != len(vars.RoomNames) {
 		return false
 	}
 
-	sort.Strings(roomNames)
-	sort.Strings(connectedRooms)
+	sort.Strings(vars.RoomNames)
+	sort.Strings(vars.ConnectedRooms)
 
-	for i := range connectedRooms {
-		if connectedRooms[i] != roomNames[i] {
+	for i := range vars.ConnectedRooms {
+		if vars.ConnectedRooms[i] != vars.RoomNames[i] {
 			return false
 		}
 	}
@@ -106,7 +91,7 @@ func processNumberOfAnts(line string) error {
 	if err != nil {
 		return fmt.Errorf("invalid number of ants: %v", err)
 	}
-	antsNumber = number
+	vars.AntsNumber = number
 	return nil
 }
 
@@ -115,7 +100,7 @@ func getRoom(line string) (string, int, int, error) {
 	if len(room) != 3 {
 		return "", 0, 0, fmt.Errorf("invalid room details, %s", line)
 	}
-	roomName = room[0]
+	name := room[0]
 
 	x, err := strconv.Atoi(room[1])
 	if err != nil {
@@ -127,7 +112,7 @@ func getRoom(line string) (string, int, int, error) {
 		return "", 0, 0, fmt.Errorf("invalid y coordinate: %v", err)
 	}
 
-	return roomName, x, y, nil
+	return name, x, y, nil
 }
 
 func storeRoom(name string, x, y int) {
@@ -136,28 +121,28 @@ func storeRoom(name string, x, y int) {
 		X:    x,
 		Y:    y,
 	}
-	rooms = append(rooms, room)
+	vars.Rooms = append(vars.Rooms, room)
 }
 
 func processLine(line string) {
-	if firstLine {
+	if vars.FirstLine {
 		errNumberOfAnts := processNumberOfAnts(line)
 		handleError(errNumberOfAnts)
-		firstLine = false
-	} else if startNode {
+		vars.FirstLine = false
+	} else if vars.IsStartNode {
 		start, _, _, errRoom := getRoom(line)
 		handleError(errRoom)
-		startRoom = start
-		startNode = false
-	} else if endNode {
+		vars.StartRoom = start
+		vars.IsStartNode = false
+	} else if vars.IsEndNode {
 		end, _, _, errRoom := getRoom(line)
 		handleError(errRoom)
-		endRoom = end
-		endNode = false
+		vars.EndRoom = end
+		vars.IsEndNode = false
 	} else if validRoomConnection(line) {
 		rooms := strings.Split(line, "-")
-		colony[rooms[0]] = append(colony[rooms[0]], rooms[1])
-		colony[rooms[1]] = append(colony[rooms[1]], rooms[0])
+		vars.Colony[rooms[0]] = append(vars.Colony[rooms[0]], rooms[1])
+		vars.Colony[rooms[1]] = append(vars.Colony[rooms[1]], rooms[0])
 	}
 }
 
@@ -203,19 +188,19 @@ func main() {
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
 		if line == "##start" {
-			startNode = true
+			vars.IsStartNode = true
 			continue
 		} else if line == "##end" {
-			endNode = true
+			vars.IsEndNode = true
 			continue
 		}
 		processLine(line)
 	}
 
-	fmt.Println(colony)
-	fmt.Println(rooms)
-	fmt.Println(roomNames)
-	fmt.Println(connectedRooms)
-	fmt.Println(startRoom)
-	fmt.Println(endRoom)
+	fmt.Println(vars.Colony)
+	fmt.Println(vars.Rooms)
+	fmt.Println(vars.RoomNames)
+	fmt.Println(vars.ConnectedRooms)
+	fmt.Println(vars.StartRoom)
+	fmt.Println(vars.EndRoom)
 }
