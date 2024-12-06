@@ -78,6 +78,11 @@ func validColonyRooms(file *os.File) bool {
 		if strings.Contains(line, " ") {
 			roomName, x, y, errRoom := getRoom(line)
 			handleError(errRoom)
+
+			if sliceContainsString(roomNames, roomName) {
+				log.Fatal("ERROR: invalid data format, room definition repeated")
+			}
+
 			storeRoom(roomName, x, y)
 			if !sliceContainsString(roomNames, roomName) {
 				roomNames = append(roomNames, roomName)
