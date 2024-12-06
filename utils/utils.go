@@ -19,7 +19,7 @@ func HandleError(err error) {
 	}
 }
 
-func sliceContainsString(arr []string, s string) bool {
+func SliceContainsString(arr []string, s string) bool {
 	for _, v := range arr {
 		if v == s {
 			return true
@@ -28,7 +28,7 @@ func sliceContainsString(arr []string, s string) bool {
 	return false
 }
 
-func validRoomConnection(line string) bool {
+func ValidRoomConnection(line string) bool {
 	rooms := strings.Split(line, "-")
 	return len(rooms) == 2 &&
 		strings.Contains(line, "-") &&
@@ -38,10 +38,10 @@ func validRoomConnection(line string) bool {
 		!strings.Contains(rooms[1], " ")
 }
 
-func storeConnectedRooms(line string) {
+func StoreConnectedRooms(line string) {
 	rooms := strings.Split(line, "-")
 	for _, v := range rooms {
-		if !sliceContainsString(vars.ConnectedRooms, v) {
+		if !SliceContainsString(vars.ConnectedRooms, v) {
 			vars.ConnectedRooms = append(vars.ConnectedRooms, v)
 		}
 	}
@@ -51,20 +51,20 @@ func ValidColonyRooms(file *os.File) bool {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
-		if validRoomConnection(line) {
-			storeConnectedRooms(line)
+		if ValidRoomConnection(line) {
+			StoreConnectedRooms(line)
 		}
 
 		if strings.Contains(line, " ") {
-			name, x, y, errRoom := getRoom(line)
+			name, x, y, errRoom := GetRoom(line)
 			HandleError(errRoom)
 
-			if sliceContainsString(vars.RoomNames, name) {
+			if SliceContainsString(vars.RoomNames, name) {
 				log.Fatal("ERROR: invalid data format, room definition repeated")
 			}
 
-			storeRoom(name, x, y)
-			if !sliceContainsString(vars.RoomNames, name) {
+			StoreRoom(name, x, y)
+			if !SliceContainsString(vars.RoomNames, name) {
 				vars.RoomNames = append(vars.RoomNames, name)
 			}
 		}
@@ -86,7 +86,7 @@ func ValidColonyRooms(file *os.File) bool {
 	return true
 }
 
-func processNumberOfAnts(line string) error {
+func ProcessNumberOfAnts(line string) error {
 	number, err := strconv.Atoi(line)
 	if err != nil {
 		return fmt.Errorf("invalid number of ants: %v", err)
@@ -95,7 +95,7 @@ func processNumberOfAnts(line string) error {
 	return nil
 }
 
-func getRoom(line string) (string, int, int, error) {
+func GetRoom(line string) (string, int, int, error) {
 	room := strings.Split(line, " ")
 	if len(room) != 3 {
 		return "", 0, 0, fmt.Errorf("invalid room details, %s", line)
@@ -115,7 +115,7 @@ func getRoom(line string) (string, int, int, error) {
 	return name, x, y, nil
 }
 
-func storeRoom(name string, x, y int) {
+func StoreRoom(name string, x, y int) {
 	room := models.Room{
 		Name: name,
 		X:    x,
@@ -126,20 +126,20 @@ func storeRoom(name string, x, y int) {
 
 func ProcessLine(line string) {
 	if vars.FirstLine {
-		errNumberOfAnts := processNumberOfAnts(line)
+		errNumberOfAnts := ProcessNumberOfAnts(line)
 		HandleError(errNumberOfAnts)
 		vars.FirstLine = false
 	} else if vars.IsStartNode {
-		start, _, _, errRoom := getRoom(line)
+		start, _, _, errRoom := GetRoom(line)
 		HandleError(errRoom)
 		vars.StartRoom = start
 		vars.IsStartNode = false
 	} else if vars.IsEndNode {
-		end, _, _, errRoom := getRoom(line)
+		end, _, _, errRoom := GetRoom(line)
 		HandleError(errRoom)
 		vars.EndRoom = end
 		vars.IsEndNode = false
-	} else if validRoomConnection(line) {
+	} else if ValidRoomConnection(line) {
 		rooms := strings.Split(line, "-")
 		vars.Colony[rooms[0]] = append(vars.Colony[rooms[0]], rooms[1])
 		vars.Colony[rooms[1]] = append(vars.Colony[rooms[1]], rooms[0])
