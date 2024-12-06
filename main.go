@@ -8,6 +8,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"lem-in/models"
 )
 
 var (
@@ -24,14 +25,8 @@ var (
 	yCord          int
 	errCord        error
 	colony         = make(map[string][]string)
-	rooms          []Room
+	rooms          []models.Room
 )
-
-type Room struct {
-	Name string
-	X    int
-	Y    int
-}
 
 func handleError(err error) {
 	if err != nil {
@@ -136,7 +131,7 @@ func getRoom(line string) (string, int, int, error) {
 }
 
 func storeRoom(name string, x, y int) {
-	room := Room{
+	room := models.Room{
 		Name: name,
 		X:    x,
 		Y:    y,
