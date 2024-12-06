@@ -76,8 +76,9 @@ func validColonyRooms(file *os.File) bool {
 		}
 
 		if strings.Contains(line, " ") {
-			roomName, _, _, errRoom := getRoom(line)
+			roomName, x, y, errRoom := getRoom(line)
 			handleError(errRoom)
+			storeRoom(roomName, x, y)
 			if !sliceContainsString(roomNames, roomName) {
 				roomNames = append(roomNames, roomName)
 			}
@@ -144,16 +145,14 @@ func processLine(line string) {
 		handleError(errNumberOfAnts)
 		firstLine = false
 	} else if startNode {
-		start, x, y, errRoom := getRoom(line)
+		start, _, _, errRoom := getRoom(line)
 		handleError(errRoom)
 		startRoom = start
-		storeRoom(startRoom, x, y)
 		startNode = false
 	} else if endNode {
-		end, x, y, errRoom := getRoom(line)
+		end, _, _, errRoom := getRoom(line)
 		handleError(errRoom)
 		endRoom = end
-		storeRoom(endRoom, x, y)
 		endNode = false
 	} else if validRoomConnection(line) {
 		rooms := strings.Split(line, "-")
