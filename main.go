@@ -27,7 +27,7 @@ func main() {
 	}
 
 	if !utils.ValidColonyRooms(file) {
-		log.Fatal("ERROR: invalid data format, your room links diverge from the rooms")
+		log.Fatal("ERROR: invalid data format, please check your rooms and room links definition")
 	}
 
 	scanner := bufio.NewScanner(file)
