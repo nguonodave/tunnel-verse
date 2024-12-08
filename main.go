@@ -7,6 +7,7 @@ import (
 	"os"
 	"strings"
 
+	"lem-in/paths"
 	"lem-in/utils"
 	"lem-in/vars"
 )
@@ -42,10 +43,13 @@ func main() {
 		utils.ProcessLine(line)
 	}
 
+	paths.FindPaths(vars.StartRoom, vars.EndRoom)
+
 	fmt.Println(vars.Colony)
 	fmt.Println(vars.Rooms)
 	fmt.Println(vars.RoomNames)
 	fmt.Println(vars.ConnectedRooms)
 	fmt.Println(vars.StartRoom)
 	fmt.Println(vars.EndRoom)
+	fmt.Println(vars.AllPaths)
 }

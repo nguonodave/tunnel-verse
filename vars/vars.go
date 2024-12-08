@@ -14,4 +14,5 @@ var (
 	ConnectedRooms []string
 	Colony         = make(map[string][]string)
 	Rooms          []models.Room
+	AllPaths       [][]string
 )
