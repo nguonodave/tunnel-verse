@@ -28,6 +28,15 @@ func SliceContainsString(arr []string, s string) bool {
 	return false
 }
 
+func SliceContainsSlice(arr1, arr2 []string) bool {
+	for _, v := range arr2 {
+		if SliceContainsString(arr1, v) {
+			return true
+		}
+	}
+	return false
+}
+
 func ValidRoomConnection(line string) bool {
 	rooms := strings.Split(line, "-")
 	return len(rooms) == 2 &&
