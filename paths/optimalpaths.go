@@ -33,3 +33,22 @@ func GetOptimalPaths1(arr [][]string) [][]string {
 
 	return paths
 }
+
+func GetOptimalPaths2(arr [][]string) [][]string {
+	paths := [][]string{}
+
+	sort.Slice(arr, func(i, j int) bool {
+		return len(arr[i]) < len(arr[j])
+	})
+
+	paths = append(paths, arr[0])
+
+	for i := 1; i < len(arr); i++ {
+		currentPathRooms := arr[i][1 : len(arr[i])-1]
+		if !utils.SliceInSlices(paths, currentPathRooms) {
+			paths = append(paths, arr[i])
+		}
+	}
+
+	return paths
+}

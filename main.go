@@ -54,5 +54,5 @@ func main() {
 	fmt.Println(vars.EndRoom)
 	fmt.Println(vars.AllPaths)
 	fmt.Println("-----------------------------------------------------------------")
-	fmt.Println(paths.GetOptimalPaths1(vars.AllPaths))
+	fmt.Println(paths.GetOptimalPaths2(vars.AllPaths))
 }
