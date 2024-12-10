@@ -45,6 +45,7 @@ func main() {
 
 	paths.FindPaths(vars.StartRoom, vars.EndRoom)
 
+	fmt.Println(vars.AntsNumber)
 	fmt.Println(vars.Colony)
 	fmt.Println(vars.Rooms)
 	fmt.Println(vars.RoomNames)
@@ -53,5 +54,5 @@ func main() {
 	fmt.Println(vars.EndRoom)
 	fmt.Println(vars.AllPaths)
 	fmt.Println("-----------------------------------------------------------------")
-	fmt.Println(paths.GetOptimalPaths(vars.AllPaths))
+	fmt.Println(paths.GetOptimalPaths1(vars.AllPaths))
 }

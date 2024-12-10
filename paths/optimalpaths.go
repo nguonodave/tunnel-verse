@@ -1,13 +1,14 @@
 package paths
 
 import (
+	"math"
 	"sort"
 
 	"lem-in/utils"
 	"lem-in/vars"
 )
 
-func GetOptimalPaths(arr [][]string) [][]string {
+func GetOptimalPaths1(arr [][]string) [][]string {
 	paths := [][]string{}
 
 	sort.Slice(arr, func(i, j int) bool {
@@ -15,13 +16,17 @@ func GetOptimalPaths(arr [][]string) [][]string {
 	})
 
 	paths = append(paths, arr[0])
-	
-	for i := 1; i < len(arr); i++ {
-		initialPath := paths[len(paths)-1]
-		initialPathRooms := initialPath[1:len(initialPath)-1]
-		currentPathRooms := arr[i][1:len(arr[i])-1]
 
-		if len(currentPathRooms) <= vars.AntsNumber/2 && !utils.SliceContainsSlice(initialPathRooms, currentPathRooms) {
+	for i := 1; i < len(arr); i++ {
+		firstPath := paths[0]
+		firstPathRooms := firstPath[1 : len(firstPath)-1]
+		currentPathRooms := arr[i][1 : len(arr[i])-1]
+		val := float64(vars.AntsNumber) / 2
+
+		if len(currentPathRooms) <= int(math.Round(val)) && utils.SliceContainsSlice(paths[0], currentPathRooms) && len(currentPathRooms) != len(firstPathRooms) {
+			paths = paths[1:]
+			paths = append(paths, arr[i])
+		} else if !utils.SliceInSlices(paths, currentPathRooms) {
 			paths = append(paths, arr[i])
 		}
 	}
