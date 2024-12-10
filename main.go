@@ -52,4 +52,6 @@ func main() {
 	fmt.Println(vars.StartRoom)
 	fmt.Println(vars.EndRoom)
 	fmt.Println(vars.AllPaths)
+	fmt.Println("-----------------------------------------------------------------")
+	fmt.Println(paths.GetOptimalPaths(vars.AllPaths))
 }
