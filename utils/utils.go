@@ -37,6 +37,17 @@ func SliceContainsSlice(arr1, arr2 []string) bool {
 	return false
 }
 
+func SliceInSlices(arr1 [][]string, arr2 []string) bool {
+	for _, v := range arr2 {
+		for _, w := range arr1 {
+			if SliceContainsString(w, v) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func ValidRoomConnection(line string) bool {
 	rooms := strings.Split(line, "-")
 	return len(rooms) == 2 &&
