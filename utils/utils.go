@@ -55,7 +55,8 @@ func ValidRoomConnection(line string) bool {
 		rooms[0] != "" &&
 		rooms[1] != "" &&
 		!strings.Contains(rooms[0], " ") &&
-		!strings.Contains(rooms[1], " ")
+		!strings.Contains(rooms[1], " ") &&
+		rooms[0] != rooms[1]
 }
 
 func StoreConnectedRooms(line string) {
@@ -73,6 +74,8 @@ func ValidColonyRooms(file *os.File) bool {
 		line := strings.TrimSpace(scanner.Text())
 		if ValidRoomConnection(line) {
 			StoreConnectedRooms(line)
+		} else if strings.Contains(line, "-") && !ValidRoomConnection(line) {
+			log.Fatalf("ERROR: invalid data format, invalid room link %s", line)
 		}
 
 		if strings.Contains(line, " ") {
