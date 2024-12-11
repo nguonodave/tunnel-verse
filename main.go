@@ -43,6 +43,10 @@ func main() {
 		utils.ProcessLine(line)
 	}
 
+	if vars.AntsNumber < 1 {
+		log.Fatal("ERROR: invalid data format, no ants to move in colony")
+	}
+
 	paths.FindPaths(vars.StartRoom, vars.EndRoom)
 
 	fmt.Println(vars.AntsNumber)
