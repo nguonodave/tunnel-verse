@@ -1,4 +1,4 @@
-package paths
+package processpaths
 
 import (
 	"lem-in/utils"

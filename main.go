@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"lem-in/paths"
+	"lem-in/processpaths"
 	"lem-in/utils"
 	"lem-in/vars"
 )
@@ -47,8 +47,8 @@ func main() {
 		log.Fatal("ERROR: invalid data format, no ants to move in colony")
 	}
 
-	paths.FindPaths(vars.StartRoom, vars.EndRoom)
-	paths.OptimalPathMovement()
+	processpaths.FindPaths(vars.StartRoom, vars.EndRoom)
+	processpaths.OptimalPathMovement()
 
 	fmt.Println(vars.AntsNumber)
 	fmt.Println(vars.Colony)
