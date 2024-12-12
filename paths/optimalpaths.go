@@ -1,9 +1,11 @@
 package paths
 
 import (
+	"fmt"
 	"math"
 	"sort"
 
+	"lem-in/ants"
 	"lem-in/models"
 	"lem-in/utils"
 	"lem-in/vars"
@@ -74,8 +76,11 @@ func OptimalPath() [][]string {
 		pathComb2 = append(pathComb2, path)
 	}
 
-	// fmt.Println(pathComb1)
-	// fmt.Println(pathComb2)
+	ants.AssignAnts(pathComb1, vars.AntsNumber)
+	ants.AssignAnts(pathComb2, vars.AntsNumber)
+
+	fmt.Println(pathComb1)
+	fmt.Println(pathComb2)
 
 	// assign ants
 	// calculate number of turns
