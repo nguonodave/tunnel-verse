@@ -56,20 +56,6 @@ func GetOptimalPaths2(arr [][]string) [][]string {
 	return paths
 }
 
-func MaxTurns(paths []models.Path) int {
-	maxTurns := 1
-	for _, path := range paths {
-		rooms := path.Rooms[1:len(path.Rooms)-1]
-		ants := path.Ants
-		turns := len(rooms) + len(ants)
-
-		if turns > maxTurns {
-			maxTurns = turns
-		}
-	}
-	return maxTurns
-}
-
 func OptimalPathMovement() {
 	path1 := GetOptimalPaths1(vars.AllPaths)
 	path2 := GetOptimalPaths2(vars.AllPaths)
@@ -100,8 +86,8 @@ func OptimalPathMovement() {
 	fmt.Println(pathComb1)
 	fmt.Println(pathComb2)
 
-	turns1 := MaxTurns(pathComb1)
-	turns2 := MaxTurns(pathComb2)
+	turns1 := utils.MaxTurns(pathComb1)
+	turns2 := utils.MaxTurns(pathComb2)
 
 	fmt.Println(turns1)
 	fmt.Println(turns2)
