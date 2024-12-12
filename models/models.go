@@ -5,3 +5,8 @@ type Room struct {
 	X    int
 	Y    int
 }
+
+type Path struct {
+	Rooms []string
+	Ants  []int
+}
