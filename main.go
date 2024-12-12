@@ -7,6 +7,7 @@ import (
 	"os"
 	"strings"
 
+	"lem-in/ants"
 	"lem-in/processpaths"
 	"lem-in/utils"
 	"lem-in/vars"
@@ -60,4 +61,6 @@ func main() {
 	fmt.Println(vars.AllPaths)
 	fmt.Println("-----------------------------------------------------------------")
 	fmt.Println(vars.PathMovement)
+
+	ants.MoveAnts(vars.PathMovement)
 }

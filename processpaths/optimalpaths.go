@@ -84,13 +84,13 @@ func OptimalPathMovement() {
 	ants.AssignAnts(pathComb2, vars.AntsNumber)
 
 	fmt.Println(pathComb1)
-	fmt.Println(pathComb2)
+	// fmt.Println(pathComb2)
 
 	turns1 := utils.MaxTurns(pathComb1)
 	turns2 := utils.MaxTurns(pathComb2)
 
-	fmt.Println(turns1)
-	fmt.Println(turns2)
+	// fmt.Println(turns1)
+	// fmt.Println(turns2)
 
 	if turns1 < turns2 {
 		vars.PathMovement = pathComb1
