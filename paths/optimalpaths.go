@@ -4,6 +4,7 @@ import (
 	"math"
 	"sort"
 
+	"lem-in/models"
 	"lem-in/utils"
 	"lem-in/vars"
 )
@@ -51,4 +52,34 @@ func GetOptimalPaths2(arr [][]string) [][]string {
 	}
 
 	return paths
+}
+
+func OptimalPath() [][]string {
+	path1 := GetOptimalPaths1(vars.AllPaths)
+	path2 := GetOptimalPaths2(vars.AllPaths)
+
+	pathComb1 := []models.Path{}
+	for _, v := range path1 {
+		path := models.Path{
+			Rooms: v,
+		}
+		pathComb1 = append(pathComb1, path)
+	}
+
+	pathComb2 := []models.Path{}
+	for _, v := range path2 {
+		path := models.Path{
+			Rooms: v,
+		}
+		pathComb2 = append(pathComb2, path)
+	}
+
+	// fmt.Println(pathComb1)
+	// fmt.Println(pathComb2)
+
+	// assign ants
+	// calculate number of turns
+	// select the one with the least number of turns
+
+	return path1
 }
