@@ -70,7 +70,7 @@ func MaxTurns(paths []models.Path) int {
 	return maxTurns
 }
 
-func OptimalPath() []models.Path {
+func OptimalPathMovement() []models.Path {
 	path1 := GetOptimalPaths1(vars.AllPaths)
 	path2 := GetOptimalPaths2(vars.AllPaths)
 
