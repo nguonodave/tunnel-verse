@@ -15,4 +15,5 @@ var (
 	Colony         = make(map[string][]string)
 	Rooms          []models.Room
 	AllPaths       [][]string
+	PathMovement   []models.Path
 )

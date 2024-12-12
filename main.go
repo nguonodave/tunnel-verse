@@ -48,6 +48,7 @@ func main() {
 	}
 
 	paths.FindPaths(vars.StartRoom, vars.EndRoom)
+	paths.OptimalPathMovement()
 
 	fmt.Println(vars.AntsNumber)
 	fmt.Println(vars.Colony)
@@ -58,5 +59,5 @@ func main() {
 	fmt.Println(vars.EndRoom)
 	fmt.Println(vars.AllPaths)
 	fmt.Println("-----------------------------------------------------------------")
-	fmt.Println(paths.OptimalPathMovement())
+	fmt.Println(vars.PathMovement)
 }
