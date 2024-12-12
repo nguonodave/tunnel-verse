@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -50,17 +49,6 @@ func main() {
 
 	processpaths.FindPaths(vars.StartRoom, vars.EndRoom)
 	processpaths.OptimalPathMovement()
-
-	fmt.Println(vars.AntsNumber)
-	fmt.Println(vars.Colony)
-	fmt.Println(vars.Rooms)
-	fmt.Println(vars.RoomNames)
-	fmt.Println(vars.ConnectedRooms)
-	fmt.Println(vars.StartRoom)
-	fmt.Println(vars.EndRoom)
-	fmt.Println(vars.AllPaths)
-	fmt.Println("-----------------------------------------------------------------")
-	fmt.Println(vars.PathMovement)
 
 	ants.MoveAnts(vars.PathMovement)
 }

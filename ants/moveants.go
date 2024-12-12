@@ -20,7 +20,6 @@ func MoveAnts(paths []models.Path) {
 				if position >= 0 && position < len(path.Rooms[1:]) {
 					moves = append(moves, fmt.Sprintf("L%d-%s", ant, path.Rooms[1:][position]))
 				}
-				// fmt.Println(moves)
 			}
 		}
 
