@@ -70,7 +70,7 @@ func MaxTurns(paths []models.Path) int {
 	return maxTurns
 }
 
-func OptimalPath() [][]string {
+func OptimalPath() []models.Path {
 	path1 := GetOptimalPaths1(vars.AllPaths)
 	path2 := GetOptimalPaths2(vars.AllPaths)
 
@@ -106,5 +106,9 @@ func OptimalPath() [][]string {
 	fmt.Println(turns1)
 	fmt.Println(turns2)
 
-	return path1
+	if turns1 < turns2 {
+		return pathComb1
+	}
+
+	return pathComb2
 }
