@@ -1,7 +1,6 @@
 package processpaths
 
 import (
-	"fmt"
 	"math"
 	"sort"
 
@@ -78,8 +77,6 @@ func OptimalPathMovement() {
 
 	ants.AssignAnts(pathComb1, vars.AntsNumber)
 	ants.AssignAnts(pathComb2, vars.AntsNumber)
-
-	fmt.Println(pathComb1)
 
 	turns1 := utils.MaxTurns(pathComb1)
 	turns2 := utils.MaxTurns(pathComb2)
