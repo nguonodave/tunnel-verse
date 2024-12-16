@@ -48,6 +48,15 @@ func SliceInSlices(arr1 [][]string, arr2 []string) bool {
 	return false
 }
 
+func ValidCoordinates(x, y int) bool {
+	for _, v := range vars.Rooms {
+		if v.X == x && v.Y == y {
+			return false
+		}
+	}
+	return true
+}
+
 func ValidRoomConnection(line string) bool {
 	rooms := strings.Split(line, "-")
 	return len(rooms) == 2 &&
@@ -84,6 +93,10 @@ func ValidColonyRooms(file *os.File) bool {
 
 			if SliceContainsString(vars.RoomNames, name) {
 				log.Fatal("ERROR: invalid data format, room definition repeated")
+			}
+
+			if !ValidCoordinates(x, y) {
+				log.Fatalf("ERROR: invalid data format, duplicated coordinates on %s", line)
 			}
 
 			StoreRoom(name, x, y)
