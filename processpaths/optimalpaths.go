@@ -13,9 +13,10 @@ import (
 // GetOptimalPaths1 selects the optimal paths from a list of paths (arr) based on certain criteria.
 // The function first sorts the paths by length, then iterates through each path to determine if it should be included in the result.
 // A path is added if it meets one of the following conditions:
-// - If the number of rooms in the current path is less than or equal to half of the total number of ants (rounded), 
-//   and it shares some rooms with the first path but has a different length.
-// - If the current path does not already exist in any of the existing paths' room sets.
+//   - If the number of rooms in the current path is less than or equal to half of the total number of ants (rounded),
+//     and it shares some rooms with the first path but has a different length.
+//   - If the current path does not already exist in any of the existing paths' room sets.
+//
 // The function returns a slice of paths that meet these conditions.
 func GetOptimalPaths1(arr [][]string) [][]string {
 	paths := [][]string{}

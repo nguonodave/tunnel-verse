@@ -81,9 +81,9 @@ func ValidRoomConnection(line string) bool {
 		rooms[0] != rooms[1]
 }
 
-// StoreConnectedRooms processes a line representing a connection between two rooms, 
+// StoreConnectedRooms processes a line representing a connection between two rooms,
 // and stores the unique room names in the global vars.ConnectedRooms slice.
-// The function splits the line by a hyphen ("-"), iterates over the resulting room names, 
+// The function splits the line by a hyphen ("-"), iterates over the resulting room names,
 // and appends each room to vars.ConnectedRooms only if it is not already present in the slice.
 func StoreConnectedRooms(line string) {
 	rooms := strings.Split(line, "-")
@@ -242,7 +242,7 @@ func HasStartAndEnd(file *os.File) bool {
 func MaxTurns(paths []models.Path) int {
 	maxTurns := 1
 	for _, path := range paths {
-		rooms := path.Rooms[1:len(path.Rooms)-1]
+		rooms := path.Rooms[1 : len(path.Rooms)-1]
 		ants := path.Ants
 		turns := len(rooms) + len(ants)
 

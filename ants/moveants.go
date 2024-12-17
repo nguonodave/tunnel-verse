@@ -9,8 +9,8 @@ import (
 )
 
 // MoveAnts simulates the movement of ants across multiple paths for a given number of turns.
-// For each turn in every path, it calculates the new positions of ants on their respective paths, 
-// and generates a list of movements formatted as "L<ant_number>-<room_name>". 
+// For each turn in every path, it calculates the new positions of ants on their respective paths,
+// and generates a list of movements formatted as "L<ant_number>-<room_name>".
 // After all the ants move in a given turn, their movements are printed as a space-separated string.
 func MoveAnts(paths []models.Path) {
 	maxTurns := utils.MaxTurns(paths)
