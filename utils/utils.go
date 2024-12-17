@@ -19,6 +19,7 @@ func HandleError(err error) {
 	}
 }
 
+// SliceContainsString checks if a given string (s) is present in the provided slice of strings (arr).
 func SliceContainsString(arr []string, s string) bool {
 	for _, v := range arr {
 		if v == s {
@@ -28,6 +29,7 @@ func SliceContainsString(arr []string, s string) bool {
 	return false
 }
 
+// SliceContainsSlice checks if any element from the second slice (arr2) is present in the first slice (arr1).
 func SliceContainsSlice(arr1, arr2 []string) bool {
 	for _, v := range arr2 {
 		if SliceContainsString(arr1, v) {
@@ -37,6 +39,10 @@ func SliceContainsSlice(arr1, arr2 []string) bool {
 	return false
 }
 
+// SliceInSlices checks if any element from the second slice (arr2) is present in any of the sub-slices of the first slice (arr1).
+// The function iterates over each element of arr2 and, for each element, checks if it exists in any sub-slice of arr1
+// using the helper function SliceContainsString. If a match is found, the function returns true.
+// If no elements from arr2 are found in any sub-slice of arr1, it returns false.
 func SliceInSlices(arr1 [][]string, arr2 []string) bool {
 	for _, v := range arr2 {
 		for _, w := range arr1 {
@@ -48,6 +54,8 @@ func SliceInSlices(arr1 [][]string, arr2 []string) bool {
 	return false
 }
 
+// ValidCoordinates checks if the given coordinates (x, y) are valid by ensuring that no existing room
+// in the global vars.Rooms slice has the same coordinates.
 func ValidCoordinates(x, y int) bool {
 	for _, v := range vars.Rooms {
 		if v.X == x && v.Y == y {
@@ -57,6 +65,11 @@ func ValidCoordinates(x, y int) bool {
 	return true
 }
 
+// ValidRoomConnection checks whether a given line represents a valid room connection.
+// The function splits the line by a hyphen ("-") and validates the following conditions:
+// - The line contains exactly one hyphen separating two rooms.
+// - Both rooms are non-empty and do not contain spaces.
+// - The two rooms are not the same.
 func ValidRoomConnection(line string) bool {
 	rooms := strings.Split(line, "-")
 	return len(rooms) == 2 &&
@@ -68,6 +81,10 @@ func ValidRoomConnection(line string) bool {
 		rooms[0] != rooms[1]
 }
 
+// StoreConnectedRooms processes a line representing a connection between two rooms, 
+// and stores the unique room names in the global vars.ConnectedRooms slice.
+// The function splits the line by a hyphen ("-"), iterates over the resulting room names, 
+// and appends each room to vars.ConnectedRooms only if it is not already present in the slice.
 func StoreConnectedRooms(line string) {
 	rooms := strings.Split(line, "-")
 	for _, v := range rooms {
@@ -77,6 +94,11 @@ func StoreConnectedRooms(line string) {
 	}
 }
 
+// ValidColonyRooms validates room and connection data in the provided file.
+// It checks for valid room connections, ensures no duplicate room names or coordinates, and stores valid rooms.
+// After processing, it compares the number of connected rooms to the total room names, sorting and comparing them.
+// The function returns false if any validation fails, and true if all checks pass.
+// It uses file.Seek(0, 0) to reset the file pointer to the beginning for potential further operations.
 func ValidColonyRooms(file *os.File) bool {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
@@ -122,6 +144,7 @@ func ValidColonyRooms(file *os.File) bool {
 	return true
 }
 
+// ProcessNumberOfAnts parses a line representing the number of ants and updates the global ants count.
 func ProcessNumberOfAnts(line string) error {
 	number, err := strconv.Atoi(line)
 	if err != nil {
@@ -131,6 +154,11 @@ func ProcessNumberOfAnts(line string) error {
 	return nil
 }
 
+// GetRoom parses a line of input representing a room's details and returns the room's name and coordinates (x, y).
+// The function expects the line to contain exactly three space-separated values:
+// - The room name (string)
+// - The x-coordinate (integer)
+// - The y-coordinate (integer)
 func GetRoom(line string) (string, int, int, error) {
 	room := strings.Split(line, " ")
 	if len(room) != 3 {
@@ -151,6 +179,7 @@ func GetRoom(line string) (string, int, int, error) {
 	return name, x, y, nil
 }
 
+// StoreRoom strores and struct room with its name and x and y coordinates
 func StoreRoom(name string, x, y int) {
 	room := models.Room{
 		Name: name,
@@ -160,6 +189,11 @@ func StoreRoom(name string, x, y int) {
 	vars.Rooms = append(vars.Rooms, room)
 }
 
+// ProcessLine processes a single line of input, updating global variables based on its content.
+// The function performs the following steps:
+// - If the line represents a valid room connection, it updates the colony's room connectivity (graph).
+// - The graph is in form of a map where the keys are the nodes, and values, all its neighbors.
+// Each step also includes error handling for potential issues encountered during processing.
 func ProcessLine(line string) {
 	if vars.FirstLine {
 		errNumberOfAnts := ProcessNumberOfAnts(line)
@@ -182,6 +216,8 @@ func ProcessLine(line string) {
 	}
 }
 
+// HasStartAndEnd check if the colony has a start and end room,
+// It returns true if it does and false otherwise.
 func HasStartAndEnd(file *os.File) bool {
 	hasStart := false
 	hasEnd := false
@@ -202,6 +238,7 @@ func HasStartAndEnd(file *os.File) bool {
 	return false
 }
 
+// MaxTurns calculates the nuber of turn in each selected paths
 func MaxTurns(paths []models.Path) int {
 	maxTurns := 1
 	for _, path := range paths {
