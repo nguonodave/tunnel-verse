@@ -12,6 +12,13 @@ import (
 	"lem-in/vars"
 )
 
+// - Checks if a valid file name is provided as a command-line argument.
+// - Opens and reads the specified file, ensuring error handling for file operations.
+// - Validates the file format, ensuring that start and end rooms are defined, and the room and connection data is valid.
+// - Processes each line in the file, identifying special markers for the start and end rooms, and processing room data accordingly.
+// - Verifies that at least one ant is available for movement.
+// - Finds the optimal path from the start room to the end room and assigns ants to the paths.
+// - Moves the ants along the selected optimal path.
 func main() {
 	if len(os.Args) != 2 {
 		log.Println("ERROR: missing file name")
