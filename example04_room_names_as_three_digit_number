@@ -1,0 +1,17 @@
+9
+##start
+101 0 6
+102 6 3
+103 9 6
+dinish 6 9
+jimYoung 11 7
+##end
+peter 14 6
+101-dinish
+dinish-jimYoung
+101-102
+102-peter
+102-103
+101-103
+103-jimYoung
+jimYoung-peter
