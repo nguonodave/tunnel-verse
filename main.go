@@ -40,6 +40,9 @@ func main() {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
+		if utils.Comment(line) {
+			continue
+		}
 		if line == "##start" {
 			vars.IsStartNode = true
 			continue

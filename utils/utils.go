@@ -76,6 +76,10 @@ func ValidRoomConnection(line string) bool {
 		strings.Contains(line, "-") &&
 		rooms[0] != "" &&
 		rooms[1] != "" &&
+		string(rooms[0][0]) != "#" &&
+		string(rooms[0][0]) != "L" &&
+		string(rooms[1][0]) != "#" &&
+		string(rooms[1][0]) != "L" &&
 		!strings.Contains(rooms[0], " ") &&
 		!strings.Contains(rooms[1], " ") &&
 		rooms[0] != rooms[1]
@@ -103,6 +107,9 @@ func ValidColonyRooms(file *os.File) bool {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
+		if Comment(line) {
+			continue
+		}
 		if ValidRoomConnection(line) {
 			StoreConnectedRooms(line)
 		} else if strings.Contains(line, "-") && !ValidRoomConnection(line) {
@@ -251,4 +258,11 @@ func MaxTurns(paths []models.Path) int {
 		}
 	}
 	return maxTurns
+}
+
+func Comment(s string) bool {
+	if s != "" && string(s[0]) == "#" && s != "##start" && s != "##end" {
+		return true
+	}
+	return false
 }
