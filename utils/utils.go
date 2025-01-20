@@ -13,6 +13,12 @@ import (
 	"lem-in/vars"
 )
 
+var (
+	startRoom string
+	endRoom   string
+	roomLinks []string
+)
+
 func HandleError(err error) {
 	if err != nil {
 		log.Fatal("ERROR: ", err)
@@ -210,13 +216,16 @@ func ProcessLine(line string) {
 		start, _, _, errRoom := GetRoom(line)
 		HandleError(errRoom)
 		vars.StartRoom = start
+		startRoom = line
 		vars.IsStartNode = false
 	} else if vars.IsEndNode {
 		end, _, _, errRoom := GetRoom(line)
 		HandleError(errRoom)
+		endRoom = line
 		vars.EndRoom = end
 		vars.IsEndNode = false
 	} else if ValidRoomConnection(line) {
+		roomLinks = append(roomLinks, line)
 		rooms := strings.Split(line, "-")
 		vars.Colony[rooms[0]] = append(vars.Colony[rooms[0]], rooms[1])
 		vars.Colony[rooms[1]] = append(vars.Colony[rooms[1]], rooms[0])
@@ -265,4 +274,27 @@ func Comment(s string) bool {
 		return true
 	}
 	return false
+}
+
+func PrintColony() {
+	fmt.Println(vars.AntsNumber)
+
+	fmt.Println("##start")
+	fmt.Println(startRoom)
+
+	for _, v := range vars.Rooms {
+		room := fmt.Sprintf("%s %d %d", v.Name, v.X, v.Y)
+		if room != startRoom && room != endRoom {
+			fmt.Println(room)
+		}
+	}
+
+	fmt.Println("##end")
+	fmt.Println(endRoom)
+
+	for _, v := range roomLinks {
+		fmt.Println(v)
+	}
+
+	fmt.Println()
 }

@@ -60,5 +60,6 @@ func main() {
 	processpaths.FindPaths(vars.StartRoom, vars.EndRoom)
 	processpaths.OptimalPathMovement()
 
+	utils.PrintColony()
 	ants.MoveAnts(vars.PathMovement)
 }
